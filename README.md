@@ -139,26 +139,30 @@ After successfully executing the bootloader, the operating system loading proces
 The successful loading and initialization of the operating system establish the foundation for a fully functional computer system. The kernel takes control of the hardware and manages the interaction between hardware components and user-level applications, ensuring a smooth and efficient user experience.
 
 
-# Step 5: Fetching the Bootloader
+# Step 5: Operating System Initialization
 
-After completing the Power-On Self-Test (POST) and identifying the boot device, the BIOS/UEFI proceeds to fetch the bootloader from the storage device. The bootloader is a small program responsible for loading the operating system's kernel and initiating the transition to the operating system.
+After the bootloader has located the operating system's kernel image on the storage device and handed over control, the process of "Operating System Initialization" begins. The kernel is the core component of the operating system, and its primary task is to manage system resources, interact with hardware, and provide various services to applications.
 
-1. **Locating the Bootloader**: The BIOS/UEFI reads the first sector of the boot device, which contains the Master Boot Record (MBR) for legacy BIOS systems or the GUID Partition Table (GPT) for modern UEFI-based systems. The MBR/GPT contains information about the partition structure and the location of the bootloader.
+1. **Kernel Loading**: The bootloader loads the kernel image from the storage device (e.g., hard disk, SSD) into RAM. The kernel is a binary file containing the essential code and data structures needed to start the operating system.
 
-2. **Bootloader Activation**: The BIOS/UEFI activates the bootloader program found in the MBR/GPT. The bootloader code is loaded into memory, specifically in the RAM (Random Access Memory), where it can be executed by the microprocessor.
+2. **Setting Up Data Structures**: The kernel sets up data structures, such as the process control block, task queues, and data segments, which are essential for managing processes and memory.
 
-3. **Bootloader Operations**: The bootloader starts executing in RAM, and its primary tasks include:
-   - **Hardware Checks**: The bootloader may perform additional hardware checks to verify the system's state and ensure that critical components are functioning correctly.
-   - **Loading the Kernel**: The bootloader locates the operating system's kernel image on the storage device. The kernel image is essential for the functioning of the operating system.
-   - **Transition to Protected Mode (for Legacy BIOS)**: In legacy BIOS systems, the bootloader switches the CPU to protected mode, allowing access to more memory and enabling advanced features. This is necessary to load a modern operating system that utilizes protected mode.
+3. **Memory Management**: The kernel initializes the memory management unit (MMU) to enable virtual memory support. Virtual memory allows programs to use a portion of the storage device as if it were RAM, called the "swap" space. This allows the system to use disk space as an extension of RAM when the physical RAM becomes full.
 
-4. **Bootloader Flexibility**: The bootloader allows users to choose from multiple operating systems if the computer is configured for dual-boot or multi-boot. It presents a menu where the user can select the desired operating system to load.
+4. **Device Drivers Initialization**: The kernel initializes device drivers for various hardware components, such as graphics cards, sound cards, network interfaces, and storage devices. Device drivers enable the operating system to communicate with and control the hardware.
 
-5. **Error Handling**: If there are issues with loading the bootloader or locating the kernel image, the bootloader may display error messages or options for recovery. This enables users to troubleshoot boot-related problems.
+5. **Interrupt Handling Setup**: The kernel sets up interrupt handling mechanisms to respond to hardware and software interrupts. Interrupts are signals that interrupt the normal flow of the CPU to handle critical events or input/output requests.
 
-6. **Handing Over Control**: After successfully locating the kernel image and performing necessary initialization tasks, the bootloader hands over control to the operating system's kernel. The kernel takes over and continues the boot process, initializing the operating system and preparing it for user interaction.
+6. **Process Initialization**: The kernel creates the first user process, also known as the init process (or systemd on modern systems). The init process becomes the parent process of all other user processes. It is responsible for starting and managing system services and other user processes.
 
-Fetching the bootloader is a critical step in the boot process, as it marks the transition from the firmware-level initialization performed by the BIOS/UEFI to the execution of the operating system. The bootloader's efficient operation ensures a smooth boot sequence and the successful loading of the operating system for user interaction and application execution.
+7. **Setting System Parameters**: The kernel sets various system parameters and configuration settings based on hardware characteristics and user-defined preferences. These parameters control the behavior and performance of the operating system.
+
+8. **Launching Init Scripts (Optional)**: On some Linux distributions, init scripts or system service managers (e.g., Systemd, Upstart) may be executed during the initialization process. These scripts start and manage background services and daemons required for the system to function properly.
+
+9. **Transition to User Mode**: After the kernel has completed initialization tasks, it transitions to user mode, where it starts scheduling and running user processes. In user mode, the CPU can execute user applications and perform tasks requested by users.
+
+Operating System Initialization is a critical phase in the boot process, as it sets up the necessary environment for user applications and system services to run smoothly. Once initialization is complete, the computer is ready to execute user programs and handle user interactions.
+
 
 
 # Step 6: Application Loading and Execution
